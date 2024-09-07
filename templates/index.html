@@ -28,7 +28,7 @@
             margin-bottom: 10px;
             font-weight: bold;
         }
-        input[type="text"] {
+        textarea {
             width: 100%;
             height: 60vh;
             padding: 10px;
@@ -36,6 +36,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            text-align: justify;
         }
         input[type="submit"] {
             margin-top: 20px;
@@ -57,11 +58,11 @@
     <br>
     <form id="predictionForm">
         <label for="Text">Text:</label>
-        <input type="text" id="Text" name="Text" required>
+        <textarea id="Text" name="Text" required></textarea>
         <br>
-        <div style="width: 100%;">
+        <div id="resultSection" style="width: 100%;">
         <input type="submit" value="Predict" style="width: 30%;">
-        <p style="display: inline;width: 70%;"><span style="color: red;" id="prediction"></span>
+        <p style="display: inline;width: 70%;"><span class="result-text" style="color: red;" id="prediction"></span>
         </p>
         </div>
     </form>
@@ -69,6 +70,15 @@
     
 
     <script>
+        function setResult(text) {
+            var result = document.getElementsByClassName('result-text')[0];
+            var isFakeNews = true;
+            if(text.includes('Not')){
+                isFakeNews = false;
+            }
+            result.textContent = text;
+            result.style.color = isFakeNews ? 'red':'green';
+        };
         document.getElementById('predictionForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the form from submitting the traditional way
 
@@ -83,7 +93,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('prediction').textContent = data.prediction;
+                //document.getElementById('prediction').textContent = data.prediction;
+                setResult(data.prediction);
             })
             .catch(error => {
                 console.error('Error:', error);
