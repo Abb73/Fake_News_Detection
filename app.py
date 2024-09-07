@@ -21,7 +21,7 @@ def predict():
         ans = obj.manual_testing(Text)
         return jsonify({'prediction': ans})  # Return a JSON response
     else:
-        return jsonify({'error': 'Key "Text" not found in request'}), 400
+        return jsonify({'error': 'Key "Text" not found in request.'}), 400
     
      
     #return str(ans)
